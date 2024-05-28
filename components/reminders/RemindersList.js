@@ -1,0 +1,6 @@
+
+function RemindersList({ reminders }) {
+  return (
+
+  );
+}
