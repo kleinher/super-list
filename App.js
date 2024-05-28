@@ -3,7 +3,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import AppLoading from "expo-app-loading";
 
 import LoginScreen from "./screens/Auth/LoginScreen";
 import SignupScreen from "./screens/Auth/SignupScreen";
@@ -12,7 +11,7 @@ import { Colors } from "./constants/styles";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import IconButton from "./components/ui/IconButton";
 import * as SplashScreen from "expo-splash-screen";
-import ReminderList from "./screens/ReminderList";
+import ReminderScreen from "./screens/ReminderScreen";
 const Stack = createNativeStackNavigator();
 
 SplashScreen.preventAutoHideAsync();
@@ -43,7 +42,7 @@ function AuthenticatedStack() {
     >
       <Stack.Screen
         name="ReminderList"
-        component={ReminderList}
+        component={ReminderScreen}
         options={{
           headerRight: ({ tintColor }) => (
             <IconButton
