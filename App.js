@@ -12,6 +12,8 @@ import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import IconButton from "./components/ui/IconButton";
 import * as SplashScreen from "expo-splash-screen";
 import ReminderScreen from "./screens/ReminderScreen";
+import ReminderContextProvider from "./store/reminder-context";
+import { ReminderContext } from "./store/reminder-context";
 const Stack = createNativeStackNavigator();
 
 SplashScreen.preventAutoHideAsync();
@@ -32,6 +34,7 @@ function AuthStack() {
 
 function AuthenticatedStack() {
   const authCtx = useContext(AuthContext);
+  const reminderCtx = useContext(ReminderContext);
   return (
     <Stack.Navigator
       screenOptions={{
@@ -44,14 +47,7 @@ function AuthenticatedStack() {
         name="ReminderList"
         component={ReminderScreen}
         options={{
-          headerRight: ({ tintColor }) => (
-            <IconButton
-              icon="exit"
-              color={tintColor}
-              size={24}
-              onPress={authCtx.logout}
-            />
-          ),
+          title: "Recordatorios",
         }}
       />
       <Stack.Screen
@@ -113,9 +109,11 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <AuthContextProvider>
-        <Root />
-      </AuthContextProvider>
+      <ReminderContextProvider>
+        <AuthContextProvider>
+          <Root />
+        </AuthContextProvider>
+      </ReminderContextProvider>
     </>
   );
 }

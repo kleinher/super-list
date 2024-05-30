@@ -1,0 +1,98 @@
+export const dummyReminders = [
+  {
+    id: "1",
+    title: "Reminder 1",
+    date: new Date("2021-09-01"),
+    completed: false,
+  },
+  {
+    id: "2",
+    title: "Reminder 2",
+    date: new Date("2021-09-02"),
+    completed: true,
+  },
+  {
+    id: "3",
+    title: "Reminder 3",
+    date: new Date("2021-09-03"),
+    completed: false,
+  },
+  {
+    id: "4",
+    title: "Reminder 4",
+    date: new Date("2021-09-04"),
+    completed: true,
+  },
+  {
+    id: "5",
+    title: "Reminder 5",
+    date: new Date("2021-09-05"),
+    completed: false,
+  },
+  {
+    id: "6",
+    title: "Reminder 6",
+    date: new Date("2021-09-06"),
+    completed: true,
+  },
+  {
+    id: "7",
+    title: "Reminder 7",
+    date: new Date("2021-09-07"),
+    completed: false,
+  },
+  {
+    id: "8",
+    title: "Reminder 8",
+    date: new Date("2021-09-08"),
+    completed: true,
+  },
+  {
+    id: "9",
+    title: "Reminder 9",
+    date: new Date("2021-09-09"),
+    completed: false,
+  },
+  {
+    id: "10",
+    title: "Reminder 10",
+    date: new Date("2021-09-10"),
+    completed: true,
+  },
+  {
+    id: "11",
+    title: "Reminder 11",
+    date: new Date("2021-09-11"),
+    completed: false,
+  },
+  {
+    id: "12",
+    title: "Reminder 12",
+    date: new Date("2021-09-12"),
+    completed: true,
+  },
+  {
+    id: "13",
+    title: "Reminder 13",
+    date: new Date("2021-09-13"),
+    completed: false,
+  },
+  {
+    id: "14",
+    title: "Reminder 14",
+    date: new Date("2021-09-14"),
+    completed: true,
+  },
+  {
+    id: "15",
+    title: "Reminder 15",
+    date: new Date("2021-09-15"),
+    completed: false,
+  },
+  {
+    id: "16",
+    title: "Reminder 16",
+    date: new Date("2021-09-16"),
+    completed: true,
+  },
+];
