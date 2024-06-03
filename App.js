@@ -10,13 +10,12 @@ import WelcomeScreen from "./screens/Auth/WelcomeScreen";
 import { Colors } from "./constants/styles";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import IconButton from "./components/ui/IconButton";
-import * as SplashScreen from "expo-splash-screen";
 import ReminderScreen from "./screens/ReminderScreen";
 import ReminderContextProvider from "./store/reminder-context";
-import { ReminderContext } from "./store/reminder-context";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
-SplashScreen.preventAutoHideAsync();
 function AuthStack() {
   return (
     <Stack.Navigator
@@ -32,9 +31,17 @@ function AuthStack() {
   );
 }
 
+function DrawerNavigator() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="Welcome" component={WelcomeScreen} />
+      <Drawer.Screen name="ReminderList" component={ReminderScreen} />
+    </Drawer.Navigator>
+  );
+}
+
 function AuthenticatedStack() {
   const authCtx = useContext(AuthContext);
-  const reminderCtx = useContext(ReminderContext);
   return (
     <Stack.Navigator
       screenOptions={{
@@ -74,7 +81,7 @@ function Navigation() {
   return (
     <NavigationContainer>
       {!authCtx.isAuthenticated && <AuthStack />}
-      {authCtx.isAuthenticated && <AuthenticatedStack />}
+      {authCtx.isAuthenticated && <DrawerNavigator />}
     </NavigationContainer>
   );
 }
@@ -101,7 +108,6 @@ function Root() {
   if (isTryingLogin) {
     return null;
   }
-  SplashScreen.hideAsync();
   return <Navigation />;
 }
 
