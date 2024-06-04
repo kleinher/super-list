@@ -3,7 +3,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import LoginScreen from "./screens/Auth/LoginScreen";
 import SignupScreen from "./screens/Auth/SignupScreen";
 import WelcomeScreen from "./screens/Auth/WelcomeScreen";
@@ -13,6 +12,9 @@ import IconButton from "./components/ui/IconButton";
 import ReminderScreen from "./screens/ReminderScreen";
 import ReminderContextProvider from "./store/reminder-context";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import ReminderMetadataContextProvider, {
+  ReminderMetadataContext,
+} from "./store/metadata-context";
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -32,10 +34,32 @@ function AuthStack() {
 }
 
 function DrawerNavigator() {
+  const authCtx = useContext(AuthContext);
+  const { getRemindersListMetadata } = useContext(ReminderMetadataContext);
+  const metadata = getRemindersListMetadata();
+  console.log(metadata);
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator
+      screenOptions={{
+        headerRight: ({ tintColor }) => (
+          <IconButton
+            icon="exit"
+            color={tintColor}
+            size={24}
+            onPress={authCtx.logout}
+          />
+        ),
+      }}
+    >
       <Drawer.Screen name="Welcome" component={WelcomeScreen} />
-      <Drawer.Screen name="ReminderList" component={ReminderScreen} />
+      {metadata?.map((item) => (
+        <Drawer.Screen
+          key={item.id}
+          name={item.title}
+          component={ReminderScreen}
+          initialParams={{ reminderList: item.reminderList }}
+        />
+      ))}
     </Drawer.Navigator>
   );
 }
@@ -94,9 +118,10 @@ function Root() {
   useEffect(() => {
     async function fetchToken() {
       const storedToken = await AsyncStorage.getItem("token");
+      const storedUserId = await AsyncStorage.getItem("userid");
 
       if (storedToken) {
-        authCtx.authenticate(storedToken);
+        authCtx.authenticate(storedToken, storedUserId);
       }
 
       setIsTryingLogin(false);
@@ -115,11 +140,13 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <ReminderContextProvider>
-        <AuthContextProvider>
-          <Root />
-        </AuthContextProvider>
-      </ReminderContextProvider>
+      <ReminderMetadataContextProvider>
+        <ReminderContextProvider>
+          <AuthContextProvider>
+            <Root />
+          </AuthContextProvider>
+        </ReminderContextProvider>
+      </ReminderMetadataContextProvider>
     </>
   );
 }

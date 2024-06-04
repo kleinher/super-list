@@ -2,16 +2,20 @@ import { View, StyleSheet } from "react-native";
 import { useContext, useLayoutEffect } from "react";
 import ReminderList from "../components/reminders/RemindersList";
 import { ReminderContext } from "../store/reminder-context";
-import { dummyReminders } from "../dummy-data/dummyData";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useState } from "react";
 import IconButton from "../components/ui/IconButton";
 import AddReminderInput from "../components/reminders/AddReminderInput";
 
 function ReminderScreen() {
-  const reminders = useContext(ReminderContext);
   const navigation = useNavigation();
+  const route = useRoute();
+
   const [addingReminder, setAddingReminder] = useState(false);
+  const reminderList = route.params.reminderList;
+  const reminderCtx = useContext(ReminderContext);
+
+  console.log(reminderList);
 
   function addReminderHandler() {
     setAddingReminder(true);
@@ -36,11 +40,14 @@ function ReminderScreen() {
     reminders.saveReminder(text);
     setAddingReminder(false);
   }
+
+  const reminders = reminderCtx.getRemindersList(reminderList);
+
   return (
     <View style={styles.container}>
       {addingReminder && <AddReminderInput handleSubmit={handleSubmit} />}
       <View style={styles.reminderList}>
-        <ReminderList reminders={reminders.reminders} />
+        <ReminderList reminders={reminders} />
       </View>
     </View>
   );

@@ -2,7 +2,6 @@ import { FlatList, View, StyleSheet } from "react-native";
 import Reminder from "./Reminder";
 
 function ReminderList({ reminders }) {
-  console.log(reminders);
   return (
     <View style={styles.container}>
       <FlatList

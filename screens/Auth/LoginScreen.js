@@ -4,7 +4,7 @@ import { Alert } from "react-native";
 import AuthContent from "../../components/Auth/AuthContent";
 import LoadingOverlay from "../../components/ui/LoadingOverlay";
 import { AuthContext } from "../../store/auth-context";
-import { login } from "../../util/auth";
+import { firebaseAuth } from "../../firebase-config";
 
 function LoginScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -14,9 +14,13 @@ function LoginScreen() {
   async function loginHandler({ email, password }) {
     setIsAuthenticating(true);
     try {
-      const token = await login(email, password);
-      authCtx.authenticate(token);
+      const response = await firebaseAuth({ email, password });
+      const idToken = response._tokenResponse.idToken;
+      const userId = response.user.uid;
+
+      authCtx.authenticate(idToken, userId);
     } catch (error) {
+      console.log(error);
       Alert.alert(
         "Authentication failed!",
         "Could not log you in. Please check your credentials or try again later!"
