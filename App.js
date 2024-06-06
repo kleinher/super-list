@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoginScreen from "./screens/Auth/LoginScreen";
 import SignupScreen from "./screens/Auth/SignupScreen";
@@ -13,10 +12,11 @@ import IconButton from "./components/ui/IconButton";
 import ReminderScreen from "./screens/ReminderScreen";
 import ReminderContextProvider from "./store/reminder-context";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+
+import CustomDrawerContent from "./layout/CustomDrawerContent";
 import ReminderMetadataContextProvider, {
   ReminderMetadataContext,
 } from "./store/metadata-context";
-import AddCategory from "./screens/AddCategory";
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -36,21 +36,11 @@ function AuthStack() {
 }
 
 function DrawerNavigator() {
-  const authCtx = useContext(AuthContext);
   const { getRemindersListMetadata } = useContext(ReminderMetadataContext);
   const metadata = getRemindersListMetadata();
   return (
     <Drawer.Navigator
-      screenOptions={{
-        headerRight: ({ tintColor }) => (
-          <IconButton
-            icon="exit"
-            color={tintColor}
-            size={24}
-            onPress={authCtx.logout}
-          />
-        ),
-      }}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen name="Welcome" component={WelcomeScreen} />
       {metadata?.map((item) => (
@@ -61,20 +51,6 @@ function DrawerNavigator() {
           initialParams={{ reminderList: item.reminderList }}
         />
       ))}
-      <Drawer.Screen
-        key="AddCategory"
-        name="AddCategory"
-        component={AddCategory}
-        options={{
-          drawerIcon: ({ focused, size }) => (
-            <Ionicons
-              name="add-circle-outline" // nombre del ícono que desees usar
-              size={size}
-              color={focused ? "#7cc" : "#ccc"}
-            />
-          ),
-        }}
-      />
     </Drawer.Navigator>
   );
 }
