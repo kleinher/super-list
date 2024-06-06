@@ -6,7 +6,6 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useState } from "react";
 import IconButton from "../components/ui/IconButton";
 import AddReminderInput from "../components/reminders/AddReminderInput";
-
 function ReminderScreen() {
   const navigation = useNavigation();
   const route = useRoute();
@@ -14,8 +13,6 @@ function ReminderScreen() {
   const [addingReminder, setAddingReminder] = useState(false);
   const reminderList = route.params.reminderList;
   const reminderCtx = useContext(ReminderContext);
-
-  console.log(reminderList);
 
   function addReminderHandler() {
     setAddingReminder(true);
@@ -33,11 +30,12 @@ function ReminderScreen() {
       ),
     });
   }, [navigation]);
+
   function handleSubmit({ text }) {
     if (text.trim().length === 0) {
       return;
     }
-    reminders.saveReminder(text);
+    reminderCtx.saveReminder(text, reminderList);
     setAddingReminder(false);
   }
 

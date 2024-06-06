@@ -9,12 +9,12 @@ function ReminderMetadataContextProvider({ children }) {
     {
       id: 1,
       title: "Work",
-      reminderList: "r1",
+      reminderList: "-NzF8RK2R-SVy1fGvaJO",
     },
     {
       id: 2,
       title: "Personal",
-      reminderList: "r3",
+      reminderList: "-NzF91BNm9Y4_L4XtWdb",
     },
   ];
 

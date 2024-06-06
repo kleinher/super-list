@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import CustomCheckbox from "../ui/CustomCheckbox";
 import ReminderContainer from "./ui/ReminderContainer";
 function Reminder({ reminder }) {

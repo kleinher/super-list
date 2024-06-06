@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
+import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoginScreen from "./screens/Auth/LoginScreen";
 import SignupScreen from "./screens/Auth/SignupScreen";
@@ -15,6 +16,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import ReminderMetadataContextProvider, {
   ReminderMetadataContext,
 } from "./store/metadata-context";
+import AddCategory from "./screens/AddCategory";
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -37,7 +39,6 @@ function DrawerNavigator() {
   const authCtx = useContext(AuthContext);
   const { getRemindersListMetadata } = useContext(ReminderMetadataContext);
   const metadata = getRemindersListMetadata();
-  console.log(metadata);
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -60,6 +61,20 @@ function DrawerNavigator() {
           initialParams={{ reminderList: item.reminderList }}
         />
       ))}
+      <Drawer.Screen
+        key="AddCategory"
+        name="AddCategory"
+        component={AddCategory}
+        options={{
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name="add-circle-outline" // nombre del ícono que desees usar
+              size={size}
+              color={focused ? "#7cc" : "#ccc"}
+            />
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 }

@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { storeReminder } from "../util/http";
+import { storeReminder } from "../util/http-firebase";
 
 export const ReminderContext = createContext({
   reminders: [],
@@ -23,13 +23,20 @@ function ReminderContextProvider({ children }) {
     },
   ]);
 
-  function saveReminder(text) {
-    const reminder = {
-      id: Math.random().toString(),
+  function saveReminder(text, reminderList) {
+    const reminderData = {
       title: text,
+      completed: false,
       date: new Date(),
     };
-    storeReminder(reminder);
+
+    const id = storeReminder(reminderData, reminderList);
+
+    const reminder = {
+      id: id,
+      ...reminderData,
+    };
+
     setReminders((reminders) => {
       return [...reminders, reminder];
     });
@@ -38,6 +45,7 @@ function ReminderContextProvider({ children }) {
   function getRemindersList(reminderList) {
     return reminders;
   }
+
   const value = {
     reminders: reminders,
     saveReminder: saveReminder,
