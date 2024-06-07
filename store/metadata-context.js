@@ -1,9 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { createNewCategoryMetadata } from "../util/http-firebase";
+import {
+  createNewCategoryMetadata,
+  getReminderMetadata,
+} from "../util/http-firebase";
 import { AuthContext } from "./auth-context";
 import { ReminderContext } from "./reminder-context";
 
 export const ReminderMetadataContext = createContext({
+  reminderMetadata: [],
   getRemindersListMetadata: () => {},
   useCreateNewCategory: (categoryName) => {},
 });
@@ -13,29 +17,27 @@ export function ReminderMetadataContextProvider({ children }) {
   const reminderCtx = useContext(ReminderContext);
   const [metadata, setMetadata] = useState([
     {
-      id: 1,
-      title: "Work",
-      reminderList: "-NzF8RK2R-SVy1fGvaJO",
-    },
-    {
-      id: 2,
-      title: "Personal",
-      reminderList: "-NzF91BNm9Y4_L4XtWdb",
+      group: [""],
+      key: "-Nzm-F_BwRN-fD5Rtka5",
+      reminderData: "-Nzm-FZnNy37AIxkaEX-",
+      title: "Z",
     },
   ]);
 
-  useEffect(() => {
-    console.log("ReminderMetadataContextProvider rendered");
-  }, []);
+  async function getRemindersListMetadata() {
+    const metadataList = await getReminderMetadata();
+    const newMetadata = Object.keys(metadataList).map((key) => ({
+      key: key,
+      ...metadataList[key],
+    }));
 
-  function getRemindersListMetadata() {
-    return metadata;
+    setMetadata(newMetadata);
+    return newMetadata;
   }
 
   async function useCreateNewCategory(categoryName) {
-    const reminderDataListId = reminderCtx.useCreateReminderData();
+    const reminderDataListId = await reminderCtx.useCreateReminderData();
 
-    console.log(reminderDataListId);
     const newCategory = {
       title: categoryName,
       reminderData: reminderDataListId,
@@ -48,7 +50,6 @@ export function ReminderMetadataContextProvider({ children }) {
       ...prevMetadata,
       { key: metadataKey, ...newCategory },
     ]);
-    console.log(metadata);
   }
 
   const value = {
