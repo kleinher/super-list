@@ -1,17 +1,22 @@
-// AddCategoryModal.js
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, Modal, Button, TextInput, StyleSheet } from "react-native";
 import { DrawerItem } from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { ReminderMetadataContext } from "../store/metadata-context";
 
 const AddCategoryModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [categoryName, setCategoryName] = useState("");
+  const metadataCtx = useContext(ReminderMetadataContext);
 
-  const handleAddCategory = () => {
-    console.log("Category Added:", categoryName);
-    setModalVisible(false);
-    setCategoryName("");
+  const handleAddCategory = async () => {
+    try {
+      await metadataCtx.useCreateNewCategory(categoryName);
+      setModalVisible(false);
+      setCategoryName("");
+    } catch (error) {
+      console.error("Failed to add category:", error);
+    }
   };
 
   return (

@@ -1,13 +1,14 @@
-import { createContext, useState } from "react";
-import { storeReminder } from "../util/http-firebase";
+import React, { createContext, useState } from "react";
+import { storeReminder, createReminderData } from "../util/http-firebase";
 
 export const ReminderContext = createContext({
   reminders: [],
   getRemindersList: (reminderList) => {},
   saveReminder: (text) => {},
+  useCreateReminderData: () => {},
 });
 
-function ReminderContextProvider({ children }) {
+export function ReminderContextProvider({ children }) {
   const [reminders, setReminders] = useState([
     {
       id: "r1",
@@ -46,10 +47,16 @@ function ReminderContextProvider({ children }) {
     return reminders;
   }
 
+  async function useCreateReminderData() {
+    const reminderDataKey = await createReminderData();
+    return reminderDataKey;
+  }
+
   const value = {
     reminders: reminders,
     saveReminder: saveReminder,
     getRemindersList: getRemindersList,
+    useCreateReminderData: useCreateReminderData,
   };
 
   return (

@@ -131,13 +131,13 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <ReminderMetadataContextProvider>
-        <ReminderContextProvider>
+      <ReminderContextProvider>
+        <ReminderMetadataContextProvider>
           <AuthContextProvider>
             <Root />
           </AuthContextProvider>
-        </ReminderContextProvider>
-      </ReminderMetadataContextProvider>
+        </ReminderMetadataContextProvider>
+      </ReminderContextProvider>
     </>
   );
 }

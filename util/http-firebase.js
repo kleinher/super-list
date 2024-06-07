@@ -10,9 +10,16 @@ export async function storeReminder(reminderData, reminderList) {
   return newPostRef.key;
 }
 
-export async function createNewCategory(categoryData) {
+export async function createNewCategoryMetadata(categoryData) {
   const db = getDatabase();
 
   const newPostRef = push(ref(db, "reminderMetadata"), categoryData);
+  return newPostRef.key;
+}
+
+export async function createReminderData() {
+  const db = getDatabase();
+
+  const newPostRef = push(ref(db, "reminderData"), { reminders: [] });
   return newPostRef.key;
 }
