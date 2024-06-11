@@ -6,6 +6,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useState } from "react";
 import IconButton from "../components/ui/IconButton";
 import AddReminderInput from "../components/reminders/AddReminderInput";
+
 function ReminderScreen() {
   const navigation = useNavigation();
   const route = useRoute();
@@ -20,14 +21,9 @@ function ReminderScreen() {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: ({ tintColor }) => (
-        <IconButton
-          size={24}
-          color={tintColor}
-          icon="add"
-          onPress={addReminderHandler}
-        />
-      ),
+      headerRight: () => {
+        return <IconButton onPress={addReminderHandler} />;
+      },
     });
   }, [navigation]);
 

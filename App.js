@@ -8,7 +8,6 @@ import SignupScreen from "./screens/Auth/SignupScreen";
 import WelcomeScreen from "./screens/Auth/WelcomeScreen";
 import { Colors } from "./constants/styles";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
-import IconButton from "./components/ui/IconButton";
 import ReminderScreen from "./screens/ReminderScreen";
 import ReminderContextProvider from "./store/reminder-context";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -17,6 +16,7 @@ import CustomDrawerContent from "./layout/CustomDrawerContent";
 import ReminderMetadataContextProvider, {
   ReminderMetadataContext,
 } from "./store/metadata-context";
+
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -63,50 +63,16 @@ function DrawerNavigator() {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen name="Welcome" component={WelcomeScreen} />
+
       {metadata?.map((item) => (
         <Drawer.Screen
           key={item.key}
           name={item.title}
           component={ReminderScreen}
-          initialParams={{ reminderList: item.reminderList }}
+          initialParams={{ reminderList: item.reminderData }}
         />
       ))}
     </Drawer.Navigator>
-  );
-}
-
-function AuthenticatedStack() {
-  const authCtx = useContext(AuthContext);
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: Colors.primary500 },
-        headerTintColor: "white",
-        contentStyle: { backgroundColor: Colors.primary100 },
-      }}
-    >
-      <Stack.Screen
-        name="ReminderList"
-        component={ReminderScreen}
-        options={{
-          title: "Recordatorios",
-        }}
-      />
-      <Stack.Screen
-        name="Welcome"
-        component={WelcomeScreen}
-        options={{
-          headerRight: ({ tintColor }) => (
-            <IconButton
-              icon="exit"
-              color={tintColor}
-              size={24}
-              onPress={authCtx.logout}
-            />
-          ),
-        }}
-      />
-    </Stack.Navigator>
   );
 }
 
