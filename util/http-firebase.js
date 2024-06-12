@@ -32,3 +32,12 @@ export async function getReminderMetadata() {
 
   return snapshot.val();
 }
+
+export async function getReminderData(reminderList) {
+  const db = getDatabase();
+  const snapshot = await get(
+    ref(db, "reminderData/" + reminderList + "/reminders")
+  );
+
+  return snapshot.val();
+}

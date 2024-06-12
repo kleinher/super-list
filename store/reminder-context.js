@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import { storeReminder, createReminderData } from "../util/http-firebase";
+import { getReminderData } from "../util/http-firebase";
 
 export const ReminderContext = createContext({
   reminders: [],
@@ -9,42 +10,46 @@ export const ReminderContext = createContext({
 });
 
 export function ReminderContextProvider({ children }) {
-  const [reminders, setReminders] = useState([
-    {
-      id: "r1",
-      title: "Work",
-      completed: false,
-      date: new Date(),
-    },
-    {
-      id: "r2",
-      title: "Personal",
-      completed: false,
-      date: new Date(),
-    },
-  ]);
+  const [reminders, setReminders] = useState({});
 
-  function saveReminder(text, reminderList) {
+  async function saveReminder(text, reminderList) {
+    console.log(text, reminderList);
     const reminderData = {
       title: text,
       completed: false,
       date: new Date(),
     };
-
-    const id = storeReminder(reminderData, reminderList);
+    const id = await storeReminder(reminderData, reminderList);
 
     const reminder = {
       id: id,
       ...reminderData,
     };
 
-    setReminders((reminders) => {
-      return [...reminders, reminder];
+    setReminders((prevReminders) => {
+      const updatedList = [...(prevReminders[reminderList] || []), reminder];
+      return {
+        ...prevReminders,
+        [reminderList]: updatedList,
+      };
     });
   }
 
-  function getRemindersList(reminderList) {
-    return reminders;
+  async function getRemindersList(reminderList) {
+    const remindersDatabase = await getReminderData(reminderList);
+    const remindersAux = [];
+    for (const key in remindersDatabase) {
+      const rem = {
+        ...remindersDatabase[key],
+        id: key,
+      };
+      remindersAux.push(rem);
+    }
+
+    setReminders((prevReminders) => ({
+      ...prevReminders,
+      [reminderList]: remindersAux,
+    }));
   }
 
   async function useCreateReminderData() {

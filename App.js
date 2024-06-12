@@ -36,17 +36,14 @@ function AuthStack() {
 }
 
 function DrawerNavigator() {
-  const { getRemindersListMetadata } = useContext(ReminderMetadataContext);
-  const [metadata, setMetadata] = useState([]);
+  const { reminderMetadata, getRemindersListMetadata } = useContext(
+    ReminderMetadataContext
+  );
   const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
     async function fetchLists() {
-      const metadata = await getRemindersListMetadata();
-
-      if (metadata) {
-        setMetadata(metadata);
-      }
+      await getRemindersListMetadata();
 
       setIsFetching(false);
     }
@@ -64,7 +61,7 @@ function DrawerNavigator() {
     >
       <Drawer.Screen name="Welcome" component={WelcomeScreen} />
 
-      {metadata?.map((item) => (
+      {reminderMetadata?.map((item) => (
         <Drawer.Screen
           key={item.key}
           name={item.title}

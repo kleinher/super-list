@@ -26,6 +26,10 @@ export function ReminderMetadataContextProvider({ children }) {
 
   async function getRemindersListMetadata() {
     const metadataList = await getReminderMetadata();
+    if (!metadataList) {
+      return;
+    }
+
     const newMetadata = Object.keys(metadataList).map((key) => ({
       key: key,
       ...metadataList[key],
@@ -53,6 +57,7 @@ export function ReminderMetadataContextProvider({ children }) {
   }
 
   const value = {
+    reminderMetadata: metadata,
     getRemindersListMetadata: getRemindersListMetadata,
     useCreateNewCategory: useCreateNewCategory,
   };
