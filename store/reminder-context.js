@@ -13,7 +13,6 @@ export function ReminderContextProvider({ children }) {
   const [reminders, setReminders] = useState({});
 
   async function saveReminder(text, reminderList) {
-    console.log(text, reminderList);
     const reminderData = {
       title: text,
       completed: false,

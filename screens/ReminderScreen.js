@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ActivityIndicator, Text } from "react-native";
 import { useContext, useLayoutEffect, useEffect } from "react";
 import ReminderList from "../components/reminders/RemindersList";
 import { ReminderContext } from "../store/reminder-context";
@@ -12,6 +12,8 @@ function ReminderScreen() {
   const route = useRoute();
 
   const [addingReminder, setAddingReminder] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
+
   const reminderList = route.params.reminderList;
   const reminderCtx = useContext(ReminderContext);
   function addReminderHandler() {
@@ -34,14 +36,23 @@ function ReminderScreen() {
 
     setAddingReminder(false);
   }
-
   useEffect(() => {
     async function getReminders() {
+      setIsFetching(true);
       await reminderCtx.getRemindersList(reminderList);
+      setIsFetching(false);
     }
     getReminders();
   }, [reminderList]);
 
+  if (isFetching) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text style={styles.loadingText}>Loading...</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       {addingReminder && <AddReminderInput handleSubmit={handleSubmit} />}
@@ -56,6 +67,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 18,
   },
   reminderList: {
     flex: 1,
