@@ -1,15 +1,11 @@
-import React, { useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-const CustomCheckbox = ({ isChecked, onToggle }) => {
+const CustomCheckbox = ({ isChecked }) => {
   return (
     <View style={styles.container}>
-      <Pressable
-        style={[styles.checkboxBase, isChecked && styles.checkboxChecked]}
-        onPress={onToggle}
-      >
+      <View style={[styles.checkboxBase, isChecked && styles.checkboxChecked]}>
         {isChecked && <Text style={styles.checkmark}>✓</Text>}
-      </Pressable>
+      </View>
     </View>
   );
 };

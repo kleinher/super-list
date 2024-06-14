@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 import CustomCheckbox from "../ui/CustomCheckbox";
 import ReminderContainer from "./ui/ReminderContainer";
 import { useContext } from "react";
@@ -15,10 +15,15 @@ function Reminder({ reminder, reminderList }) {
   }
 
   return (
-    <ReminderContainer>
-      <Text style={styles.title}>{reminder.title}</Text>
-      <CustomCheckbox isChecked={isChecked} onToggle={toggleHandler} />
-    </ReminderContainer>
+    <Pressable
+      style={[styles.checkboxBase, isChecked && styles.checkboxChecked]}
+      onPress={toggleHandler}
+    >
+      <ReminderContainer>
+        <Text style={styles.title}>{reminder.title}</Text>
+        <CustomCheckbox isChecked={isChecked} />
+      </ReminderContainer>
+    </Pressable>
   );
 }
 
