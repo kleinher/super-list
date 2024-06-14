@@ -1,13 +1,13 @@
 import { Pressable, StyleSheet } from "react-native";
 import { Text, View } from "react-native";
-function IconButton({ onPress }) {
+function IconButton({ onPress, text }) {
   return (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
       onPress={onPress}
     >
       <View style={styles.container}>
-        <Text style={styles.text}>+</Text>
+        <Text style={styles.text}>{text}</Text>
       </View>
     </Pressable>
   );

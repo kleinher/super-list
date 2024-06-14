@@ -10,20 +10,44 @@ import AddReminderInput from "../components/reminders/AddReminderInput";
 function ReminderScreen() {
   const navigation = useNavigation();
   const route = useRoute();
+  const [reminders, setReminders] = useState({});
 
   const [addingReminder, setAddingReminder] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
 
   const reminderList = route.params.reminderList;
   const reminderCtx = useContext(ReminderContext);
+
+  const [lastToggled, setLastToggled] = useState(false);
+
   function addReminderHandler() {
     setAddingReminder(true);
   }
 
+  async function deleteCompleted() {
+    setLastToggled(true);
+  }
+
+  useEffect(() => {
+    if (lastToggled) {
+      reminderCtx.deleteCompleted(reminderList);
+      setLastToggled(false);
+    }
+  }, [lastToggled]);
+
+  useEffect(() => {
+    setReminders(reminderCtx.reminders[reminderList]);
+  }, [reminderCtx.reminders[reminderList]]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return <IconButton onPress={addReminderHandler} />;
+        return (
+          <View style={{ flexDirection: "row" }}>
+            <IconButton onPress={addReminderHandler} text={"+"} />
+            <IconButton onPress={deleteCompleted} text={"x"} />
+          </View>
+        );
       },
     });
   }, [navigation]);
@@ -36,6 +60,7 @@ function ReminderScreen() {
 
     setAddingReminder(false);
   }
+
   useEffect(() => {
     async function getReminders() {
       setIsFetching(true);
@@ -53,11 +78,12 @@ function ReminderScreen() {
       </View>
     );
   }
+
   return (
     <View style={styles.container}>
       {addingReminder && <AddReminderInput handleSubmit={handleSubmit} />}
       <View style={styles.reminderList}>
-        <ReminderList reminders={reminderCtx.reminders[reminderList]} />
+        <ReminderList reminders={reminders} reminderList={reminderList} />
       </View>
     </View>
   );

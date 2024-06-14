@@ -1,4 +1,4 @@
-import { getDatabase, ref, push, get } from "firebase/database";
+import { getDatabase, ref, push, get, remove } from "firebase/database";
 
 export async function storeReminder(reminderData, reminderList) {
   const db = getDatabase();
@@ -8,6 +8,12 @@ export async function storeReminder(reminderData, reminderList) {
     reminderData
   );
   return newPostRef.key;
+}
+
+export async function deleteReminder(reminderList, reminderId) {
+  const db = getDatabase();
+  console.log(reminderList, reminderId);
+  remove(ref(db, "reminderData/" + reminderList + "/reminders/" + reminderId));
 }
 
 export async function createNewCategoryMetadata(categoryData) {

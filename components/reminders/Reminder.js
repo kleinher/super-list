@@ -2,9 +2,15 @@ import { useState } from "react";
 import { StyleSheet, Text } from "react-native";
 import CustomCheckbox from "../ui/CustomCheckbox";
 import ReminderContainer from "./ui/ReminderContainer";
-function Reminder({ reminder }) {
+import { useContext } from "react";
+import { ReminderContext } from "../../store/reminder-context";
+
+function Reminder({ reminder, reminderList }) {
   const [isChecked, setIsChecked] = useState(false);
+  const reminderCtx = useContext(ReminderContext);
+
   function toggleHandler() {
+    reminderCtx.toggleReminder(reminder.id, reminderList);
     setIsChecked((prevState) => !prevState);
   }
 

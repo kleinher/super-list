@@ -1,12 +1,14 @@
 import { FlatList, View, StyleSheet } from "react-native";
 import Reminder from "./Reminder";
 
-function ReminderList({ reminders }) {
+function ReminderList({ reminders, reminderList }) {
   return (
     <View style={styles.container}>
       <FlatList
         data={reminders}
-        renderItem={({ item }) => <Reminder reminder={item} />}
+        renderItem={({ item }) => (
+          <Reminder reminder={item} reminderList={reminderList} />
+        )}
         keyExtractor={(item) => item.id}
       />
     </View>
